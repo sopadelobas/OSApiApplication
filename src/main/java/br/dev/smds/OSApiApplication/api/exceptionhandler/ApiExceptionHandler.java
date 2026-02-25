@@ -1,17 +1,20 @@
 package br.dev.smds.OSApiApplication.api.exceptionhandler;
 
+import br.dev.smds.OSApiApplication.domain.exception.DomainException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -41,5 +44,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return super.handleExceptionInternal(ex, problema, headers, status, request);
                      
+    }
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<Object> handleDomainException(DomainException ex,WebRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+        ProblemaException problema = new ProblemaException();
+        problema.setStatus(status.value());
+        problema.setTitulo(ex.getMessage());
+        problema.setDataHora(LocalDateTime.now());
+        
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+        
     }
 }

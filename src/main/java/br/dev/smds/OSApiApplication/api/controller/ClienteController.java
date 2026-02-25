@@ -2,6 +2,7 @@ package br.dev.smds.OSApiApplication.api.controller;
 
 import br.dev.smds.OSApiApplication.domain.model.Cliente;
 import br.dev.smds.OSApiApplication.domain.repository.ClienteRepository;
+import br.dev.smds.OSApiApplication.domain.service.ClienteService;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping("/clientes/{clienteID}")
     public ResponseEntity<Cliente> buscar(@PathVariable Long clienteID) {
@@ -36,7 +40,7 @@ public class ClienteController {
     @PostMapping("/clientes")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+        return clienteService.salvar(cliente);
     }
 
     @PutMapping("clientes/{clienteID}")
@@ -47,7 +51,7 @@ public class ClienteController {
         }
 
         cliente.setId(clienteID);
-        cliente = clienteRepository.save(cliente);
+        cliente = clienteService.salvar(cliente);
         return ResponseEntity.ok(cliente);
     }
     
@@ -58,7 +62,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
         
-        clienteRepository.deleteById(clienteID);
+        clienteService.excluir(clienteID);
         return ResponseEntity.noContent().build();
     }
 
