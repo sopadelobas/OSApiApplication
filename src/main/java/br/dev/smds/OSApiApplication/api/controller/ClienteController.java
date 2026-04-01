@@ -1,12 +1,10 @@
 package br.dev.smds.OSApiApplication.api.controller;
 
 import br.dev.smds.OSApiApplication.domain.model.Cliente;
-import br.dev.smds.OSApiApplication.domain.model.OrdemServico;
 import br.dev.smds.OSApiApplication.domain.repository.ClienteRepository;
 import br.dev.smds.OSApiApplication.domain.service.ClienteService;
-import br.dev.smds.OSApiApplication.domain.service.OrdemServicoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@SecurityRequirement(name = "ApiKeyAuth")
 public class ClienteController {
 
     @Autowired

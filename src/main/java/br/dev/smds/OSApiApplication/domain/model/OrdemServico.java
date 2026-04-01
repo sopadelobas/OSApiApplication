@@ -1,6 +1,7 @@
 
 package br.dev.smds.OSApiApplication.domain.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,14 +18,18 @@ import java.util.Objects;
 public class OrdemServico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(name = "ID do pedido", example = "1", required = true)
     private Long id;
     
     @ManyToOne
+    @Schema(name = "Nome do cliente", example = "KGe", required = false)
     private Cliente cliente;
     
+    @Schema(name = "Descrição", example = "Produto molhado", required = true)
     private String descricao;
     
     @Column(precision = 10, scale = 2)
+    @Schema(name = "Preço", example = "r$10.00", required = true)
     private BigDecimal preco;
     
     @Enumerated(EnumType.STRING)

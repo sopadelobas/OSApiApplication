@@ -39,13 +39,13 @@ public class OrdemServicoService {
         ordemServicoRepository.deleteById(ordemServicoID);
     }
 
-    public List<OrdemServico> listarPorId() {
-        return ordemServicoRepository.findAll();
+    public Optional<OrdemServico> listarPorId(Long OrdemServicoID) {
+        return ordemServicoRepository.findById(OrdemServicoID);
     }
 
     public List<OrdemServico> listar() {
-        List<OrdemServico> result = ordemServicoRepository.findAll();
-        return result;
+        return ordemServicoRepository.findAll();
+
     }
 
     public List<OrdemServico> listaPorCliente(Long clienteId) {
@@ -63,13 +63,13 @@ public class OrdemServicoService {
             OrdemServico ordemServico = optOrdemServico.get();
 
             if (ordemServico.getStatus() == StatusOrdemServico.ABERTA && status != StatusOrdemServico.ABERTA) {
-                
+
                 ordemServico.setStatus(status);
                 ordemServico.setDataFinalizacao(LocalDateTime.now());
                 ordemServicoRepository.save(ordemServico);
-                
+
                 return Optional.of(ordemServico);
-                
+
             } else {
                 return Optional.empty();
             }
